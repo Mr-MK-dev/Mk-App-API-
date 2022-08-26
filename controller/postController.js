@@ -27,6 +27,7 @@ exports.postPost = (req, res) => {
 
 exports.delPost = (req, res) => {
     const value = req.params.id * 1
+    console.log(typeof value);
     sql = `DELETE from posts where id = ${value};`
     connection.execute(sql)
         .then((v) => {
@@ -41,5 +42,17 @@ exports.delPost = (req, res) => {
 
 
 exports.updatePost = (req, res) => {
+    const { content } = req.body
+    const theId = req.params.id * 1
+    console.log(typeof theId);
+    sql = `update posts set content = '${content}'  where id = ${theId};`
+    connection.execute(sql)
+        .then((v) => {
+            res.json({
+                status: 'success',
+                post_id: v
+            })
+        }).catch(err => { console.log(`${err}`); })
+
 
 }
