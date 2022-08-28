@@ -1,4 +1,4 @@
-let connection = require('../connect');
+
 
 
 class UserRegister {

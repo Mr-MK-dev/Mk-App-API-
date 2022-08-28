@@ -1,16 +1,38 @@
-let connection = require('../connect');
+const Post = require('../models/posts')
 
-exports.getPosts = (req, res) => {
-    sql = 'SELECT * FROM posts;'
-    connection.execute(sql)
+exports.getPosts = async (req, res) => {
+    try {
+        const skipValue = req.query.page * 1 || 2;
+        const limitValue = req.query.limit * 1 || 3;
+        const data = await Post.findAll({ limit: limitValue })
+
+        res.json({
+            status: 'success',
+            data:
+                data
+
+        })
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+exports.getPost = (req, res) => {
+    const value = req.params.id * 1
+    Post.findOne({ where: { id: value } })
         .then((result) => res.json({ data: result }))
         .catch(err => { console.log(err); })
 
 }
+
 exports.postPost = (req, res) => {
-    const { content } = req.body
-    let sql = 'INSERT INTO posts(id , content) values(?,?);';
-    connection.execute(sql, [null, content])
+    const { description, imageUrl } = req.body
+    Post.create(
+        {
+            description: description,
+            imageUrl: imageUrl
+        }
+    )
         .then((theData) => {
             res.json({
                 data: theData
@@ -27,9 +49,7 @@ exports.postPost = (req, res) => {
 
 exports.delPost = (req, res) => {
     const value = req.params.id * 1
-    console.log(typeof value);
-    sql = `DELETE from posts where id = ${value};`
-    connection.execute(sql)
+    Post.destroy({ where: { id: value } })
         .then((v) => {
             res.json({
                 status: 'success',
@@ -44,9 +64,8 @@ exports.delPost = (req, res) => {
 exports.updatePost = (req, res) => {
     const { content } = req.body
     const theId = req.params.id * 1
-    console.log(typeof theId);
-    sql = `update posts set content = '${content}'  where id = ${theId};`
-    connection.execute(sql)
+
+    Post.update(req.body, { where: { id: theId } })
         .then((v) => {
             res.json({
                 status: 'success',

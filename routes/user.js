@@ -1,4 +1,4 @@
-let postController = require('../controller/postController')
+let postController = require('../controller/user')
 let express = require('express');
 let Router = express.Router();
 Router.route('/post')
@@ -7,6 +7,7 @@ Router.route('/post')
 Router.route('/post/:id')
     .delete(postController.delPost)
     .patch(postController.updatePost)
+    .get(postController.getPost)
 
 
 
