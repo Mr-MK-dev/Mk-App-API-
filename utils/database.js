@@ -6,4 +6,12 @@ const db = new Sequelize('newmk', 'root', null, {
 }
 )
 
+db.authenticate().then(
+    () => {
+        console.log("Connection has been established successfully.");
+    }
+).catch((e) => {
+    console.log(e);
+})
+
 module.exports = db;

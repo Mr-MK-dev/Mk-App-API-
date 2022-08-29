@@ -14,14 +14,14 @@ app.use(morgan('dev'))
 
 app.use(authRoute)
 app.use(userRoute)
-// const arr = [1, 32, 3, 5, 4].limit(3)
+
 
 
 dbPost.belongsTo(dbUser, { constraints: true, onDelete: 'CASCADE', onUpdate: 'CASCADE' })
 dbUser.hasMany(dbPost)
 
 
-sql.sync().then(
+sql.sync({ force: true }).then(
     result => {
         console.log('Connected sync');
     }
